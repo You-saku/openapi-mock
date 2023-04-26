@@ -1,0 +1,154 @@
+openapi: 3.0.0
+
+info:
+  title: mock-server
+  version: 1.0.0
+servers: # base endpoint(not include path)
+  - url: http://localhost:80/api
+    description: base endpoint.
+components: # JWTの定義
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security: # JWTの設定
+  - bearerAuth: []
+paths:
+  /users:
+    post:
+      summary: create new user.
+      tags: 
+        - user
+      description: create new user resource.
+      requestBody:
+        required:
+          true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "you-saku"
+                email:
+                  type: string
+                  example: "sample@example.com"
+                password:
+                  type: string
+                  example: "password"
+                age:
+                  type: integer
+                  example: 10
+              required:
+                - name
+                - email
+                - password
+      responses:
+        '201':
+          description: success create new user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ID:
+                    type: integer
+                    example: 2
+                  name:
+                    type: string
+                    example: "you-saku"
+                  email:
+                    type: string
+                    example: "sample@example.com"
+                  password:
+                    type: string
+                    example: "password"
+                  age:
+                    type: integer
+                    example: 10
+                  CreatedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-03-25T11:58:24.906Z"
+                  UpdatedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-03-25T11:58:24.906Z"
+                  DeletedAt:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    example: null
+                  Todos: # TODO
+                    type: array
+                    nullable: true
+                    example: null
+  /users/{id}:
+    get:
+      summary: get a user.
+      tags: 
+        - user
+      description: get a user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minItems: 1
+      responses:
+        '200':
+          description: success get a user.
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    ID:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: "you-saku"
+                    email:
+                      type: string
+                      example: "sample@example.com"
+                    password:
+                      type: string
+                      example: "password"
+                    age:
+                      type: integer
+                      example: 10
+                    CreatedAt:
+                      type: string
+                      format: date-time
+                      example: "2023-03-25T11:58:24.906Z"
+                    UpdatedAt:
+                      type: string
+                      format: date-time
+                      example: "2023-03-25T11:58:24.906Z"
+                    DeletedAt:
+                      type: string
+                      format: date-time
+                      nullable: true
+                      example: null
+                    Todos: # TODO
+                      type: array
+                      example: []
+  /ok:
+    get:
+      summary: sample endpoint.
+      security: [] 
+      tags:
+        - sample
+      description: test.
+      responses:
+        '200':
+          description: 「api」 word.
+          content:
+            application/json:
+              schema: 
+                type: string
+                example: api
